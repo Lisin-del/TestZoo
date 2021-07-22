@@ -8,6 +8,9 @@ public class AnimalImpl implements Animal {
         this.species = species;
         this.name = name;
     }
+    public AnimalImpl(String name) {
+        this.name = name;
+    }
 
     @Override
     public String getName() {

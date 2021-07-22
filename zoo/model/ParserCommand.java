@@ -12,8 +12,7 @@ public class ParserCommand extends ZooImpl {
     private String commandUser;
     private String[] command;
     private String split = " ";
-    private InhibitionLog logLeon;
-    private String nameAnimal;
+
 
     public void writeCommand() {
         System.out.print("Enter your command: ");
@@ -22,29 +21,26 @@ public class ParserCommand extends ZooImpl {
 
 
         if(command[0].equalsIgnoreCase("check-in")) {
-            switch(command[1].toLowerCase()) {
-                case ("leon") : leonAddProcessing();
+            switch(command[1]) {
+                case ("leon") : AnimalImpl animalLeon = new AnimalImpl(Species.LEON, command[2]);
+                    checkInAnimal(animalLeon);
                     break;
-                case ("giraffe") : giraffeAddProcessing();
+                case("giraffe") : AnimalImpl animalGiraffe = new AnimalImpl(Species.GIRAFFE, command[2]);
+                    checkInAnimal(animalGiraffe);
                     break;
-                default : System.out.println("Your animal type is not correct!");
+                case("squirrel") : AnimalImpl animalSquirrel = new AnimalImpl(Species.SQUIRREL, command[2]);
+                    checkInAnimal(animalSquirrel);
+                    break;
+                case("penguin") : AnimalImpl animalPenguin = new AnimalImpl(Species.PENGUIN, command[2]);
+                    checkInAnimal(animalPenguin);
+                    break;
+                default : System.out.println("Animal type is not correct!");
                     break;
             }
         }
         else if(command[0].equalsIgnoreCase("check-out")) {
-            Iterator<Animal> iterator = animals.iterator();
-            while(iterator.hasNext()) {
-                Animal animal = iterator.next();
-                if(animal.getName().equalsIgnoreCase(command[1])) {
-                    Species species = animal.getSpecies();
-                    System.out.println("Work");
-//                    switch(species) {
-//                        case LEON : leonRemoveProcessing();
-//                        break;
-//                    }
-                }
-            }
-
+            AnimalImpl animal = new AnimalImpl(command[1]);
+            checkOutAnimal(animal);
         }
         else if(command[0].equalsIgnoreCase("log")) {
             for(InhibitionLog i : history) {
@@ -59,42 +55,6 @@ public class ParserCommand extends ZooImpl {
                     "[log]");
         }
 
-
-
-
-
     }
-
-    private void leonAddProcessing() {
-        if(cageOne.isVacantCage()) {
-            animalLeon = new AnimalImpl(Species.LEON, command[2]);
-            cageOne.setVacantCage(false);
-
-            logLeon = new InhibitionLog(new Date(), null, animalLeon.getSpecies(), animalLeon.getName());
-            history.add(logLeon);
-
-            System.out.printf("Your animal %s is added to the zoo \n", animalLeon.toString());
-        }
-        else if(!cageOne.isVacantCage()) {
-            System.out.println("The zoo cannot accept your animal");
-        }
-    }
-
-    private void leonRemoveProcessing() {
-        if(!cageOne.isVacantCage()) {
-            cageOne.setVacantCage(true);
-            logLeon = new InhibitionLog(logLeon.getCheckInDate(), new Date(), animalLeon.getSpecies(), animalLeon.getName());
-            history.add(logLeon);
-        }
-    }
-
-
-
-    private void giraffeAddProcessing() {
-
-    }
-
-
-
 
 }
